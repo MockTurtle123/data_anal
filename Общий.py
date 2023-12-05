@@ -47,19 +47,18 @@ st.plotly_chart(improve_figure)
 st.write('Посмотреть, кто проголосовал:')
 improve_box = st.selectbox('Выберите критерий', options=improve_dict.keys())
 if improve_box is not None:
-    match improve_box:
-        case 'Работу координатора':
-            st.dataframe(df.loc[df['improve'].str.contains("Работу")][['Name', 'referer']],
-                         width=500)
-        case 'Обратную связь':
-            st.dataframe(df.loc[df['improve'].str.contains("связь")][['Name', 'referer']],
-                         width=500)
-        case 'Количество мероприятий':
-            st.dataframe(df.loc[df['improve'].str.contains("мероприятий")][['Name', 'referer']],
-                         width=500)
-        case 'Чистоту':
-            st.dataframe(df.loc[df['improve'].str.contains("Чистоту")][['Name', 'referer']],
-                         width=500)
+    if improve_box == 'Работу координатора':
+        st.dataframe(df.loc[df['improve'].str.contains("Работу")][['Name', 'referer']],
+                     width=500)
+    elif improve_box == 'Обратную связь':
+        st.dataframe(df.loc[df['improve'].str.contains("связь")][['Name', 'referer']],
+                     width=500)
+    elif improve_box ==  'Количество мероприятий':
+        st.dataframe(df.loc[df['improve'].str.contains("мероприятий")][['Name', 'referer']],
+                     width=500)
+    elif improve_box == 'Чистоту':
+        st.dataframe(df.loc[df['improve'].str.contains("Чистоту")][['Name', 'referer']],
+                     width=500)
 
 st.subheader('3. Хотели бы вы узнать больше про зимний лагерь?')
 
