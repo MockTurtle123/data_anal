@@ -53,7 +53,7 @@ if improve_box is not None:
     elif improve_box == 'Обратную связь':
         st.dataframe(df.loc[df['improve'].str.contains("связь")][['Name', 'referer']],
                      width=500)
-    elif improve_box ==  'Количество мероприятий':
+    elif improve_box == 'Количество мероприятий':
         st.dataframe(df.loc[df['improve'].str.contains("мероприятий")][['Name', 'referer']],
                      width=500)
     elif improve_box == 'Чистоту':
