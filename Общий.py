@@ -19,7 +19,7 @@ for index, row in df.iterrows():
         ratings.append(row['rating'])
 
 st.write('Посмотреть, кто поставил рейтинг меньше 10:')
-rating_select = st.selectbox('выберите оценку:', options=sorted(ratings))
+rating_select = st.selectbox('выберите оценку:', options=sorted(ratings), index=None)
 
 if rating_select is not None:
     st.dataframe(df.loc[df['rating'] == rating_select][['Name', 'referer']],
@@ -45,7 +45,7 @@ improve_figure = px.histogram(improve_series,
 st.plotly_chart(improve_figure)
 
 st.write('Посмотреть, кто проголосовал:')
-improve_box = st.selectbox('Выберите критерий', options=improve_dict.keys())
+improve_box = st.selectbox('Выберите критерий', options=improve_dict.keys(), index=None)
 if improve_box is not None:
     if improve_box == 'Работу координатора':
         st.dataframe(df.loc[df['improve'].str.contains("Работу")][['Name', 'referer']],
