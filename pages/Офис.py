@@ -26,6 +26,10 @@ if office_select is not None:
     rating_figure = px.histogram(sorted_df['rating'])
     st.plotly_chart(rating_figure)
 
+    average_rating = sorted_df['rating'].mean(axis=0).squeeze()
+    rating_trunc = '%.2f' % average_rating
+    st.write(f'Средний рейтинг: {rating_trunc}')
+
     ratings = []
     for index, row in sorted_df.iterrows():
         if row['rating'] not in ratings and row['rating'] < 10:
