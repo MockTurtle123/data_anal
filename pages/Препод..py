@@ -36,9 +36,10 @@ if teacher_select is not None:
         if row['student_motivation'] not in motivation_options:
             motivation_options.append(row['student_motivation'])
 
-    motivation_box = st.selectbox('Выберите оценку', options=motivation_options)
-    st.dataframe(sorted_df.loc[sorted_df['student_motivation'] == motivation_box][['Name', 'referer']],
-                 width=500)
+    motivation_box = st.selectbox('Выберите оценку', options=motivation_options, index=None)
+    if motivation_box is not None:
+        st.dataframe(sorted_df.loc[sorted_df['student_motivation'] == motivation_box][['Name', 'referer']],
+                     width=500)
 
     st.subheader('2. Как вы оцениваете отношение преподавателя к вам?')
     teacher_figure = px.histogram(sorted_df['teacher_rating'])
@@ -51,9 +52,10 @@ if teacher_select is not None:
         if row['teacher_rating'] not in teacher_options:
             teacher_options.append(row['teacher_rating'])
 
-    teacher_box = st.selectbox('Выберите оценку', options=teacher_options)
-    st.dataframe(sorted_df.loc[sorted_df['teacher_rating'] == teacher_box][['Name', 'referer']],
-                 width=500)
+    teacher_box = st.selectbox('Выберите оценку', options=teacher_options, index=None)
+    if teacher_box is not None:
+        st.dataframe(sorted_df.loc[sorted_df['teacher_rating'] == teacher_box][['Name', 'referer']],
+                     width=500)
 
     st.subheader('3. Как вы оцениваете уровень занятий в Happy Panda?')
     opinion_figure = px.histogram(sorted_df['client_opinion'])
@@ -66,6 +68,13 @@ if teacher_select is not None:
         if row['client_opinion'] not in opinion_options:
             opinion_options.append(row['client_opinion'])
 
-    opinion_box = st.selectbox('Выберите оценку', options=opinion_options)
-    st.dataframe(sorted_df.loc[sorted_df['client_opinion'] == opinion_box][['Name', 'referer']],
-                 width=500)
+    opinion_box = st.selectbox('Выберите оценку', options=opinion_options, index=None)
+    if opinion_box is not None:
+        st.dataframe(sorted_df.loc[sorted_df['client_opinion'] == opinion_box][['Name', 'referer']],
+                     width=500)
+
+    st.subheader('Посмотреть комментарии:')
+    st.write('Кликните 2 раза, если комментарий не умещается')
+    filtered_df = sorted_df[sorted_df['Textarea'].notnull()]
+    st.dataframe(filtered_df[['Name', 'Textarea']],
+                 width=1000)

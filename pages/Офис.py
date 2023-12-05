@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 from backend import office_replace
 
+
 df = pd.read_csv('data.csv')
 df = office_replace(df)
 
@@ -31,10 +32,10 @@ if office_select is not None:
             ratings.append(row['rating'])
 
     st.write('Посмотреть, кто поставил рейтинг меньше 10:')
-    rating_select = st.selectbox('выберите оценку:', options=sorted(ratings))
-
-    st.dataframe(sorted_df.loc[sorted_df['rating'] == rating_select][['Name', 'referer']],
-                 width=500)
+    rating_select = st.selectbox('выберите оценку:', options=sorted(ratings), index=None)
+    if rating_select is not None:
+        st.dataframe(sorted_df.loc[sorted_df['rating'] == rating_select][['Name', 'referer']],
+                     width=500)
 
 
     st.subheader('2. Что бы вы хотели улучшить в Happy Panda:')
@@ -58,7 +59,7 @@ if office_select is not None:
     st.plotly_chart(improve_figure)
 
     st.write('Посмотреть, кто проголосовал:')
-    improve_box = st.selectbox('Выберите критерий', options=improve_dict.keys())
+    improve_box = st.selectbox('Выберите критерий', options=improve_dict.keys(), index=None)
     if improve_box is not None:
         match improve_box:
             case 'Работу координатора':
@@ -81,7 +82,14 @@ if office_select is not None:
     admin_ratings = ['Нейтральные', 'Равнодушные']
 
     st.write('Посмотреть, кто проголосовал:')
-    admin_box = st.selectbox('Выберите оценку', options=admin_ratings)
+    admin_box = st.selectbox('Выберите оценку', options=admin_ratings, index=None)
 
-    st.dataframe(sorted_df.loc[sorted_df['admin_rating'] == admin_box][['Name', 'referer']],
-                 width=500)
+    if admin_box is not None:
+        st.dataframe(sorted_df.loc[sorted_df['admin_rating'] == admin_box][['Name', 'referer']],
+                     width=500)
+
+    st.subheader('Посмотреть комментарии:')
+    st.write('Кликните 2 раза, если комментарий не умещается')
+    filtered_df = sorted_df[sorted_df['Textarea'].notnull()]
+    st.dataframe(filtered_df[['Name', 'Textarea']],
+                 width=1000)
