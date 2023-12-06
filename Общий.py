@@ -60,7 +60,23 @@ if improve_box is not None:
         st.dataframe(df.loc[df['improve'].str.contains("Чистоту")][['Name', 'referer']],
                      width=500)
 
-st.subheader('3. Хотели бы вы узнать больше про зимний лагерь?')
+
+st.subheader('3. Как вы оцениваете занятия в Happy Panda?')
+course_options = ['Раннее развитие',
+                 'Английский язык',
+                 'Подготовка к школе',
+                 'Частная школа Панда Академия',
+                 'Изобразительное искусство']
+
+course_select = st.selectbox('Выберите направление:', index=None, options=course_options)
+if course_select is not None:
+    course_df = df.loc[df['course'] == course_select]
+    course_figure = px.pie(course_df['client_opinion'], names='client_opinion')
+    st.write(f'Всего проголосовало: {len(course_df.index)}')
+    st.plotly_chart(course_figure)
+
+
+st.subheader('4. Хотели бы вы узнать больше про зимний лагерь?')
 
 camp_figure = px.pie(df['winter_camp'], names='winter_camp')
 st.plotly_chart(camp_figure)
