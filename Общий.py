@@ -19,11 +19,13 @@ course_select = st.selectbox('Выберите направление:', index=N
 if course_select is not None:
     course_df = df.loc[df['course'] == course_select]
     course_figure = px.pie(course_df['lesson_rating'], names='lesson_rating')
+    course_figure.update_traces(textposition='inside', textinfo='percent+label')
     st.write(f'Всего проголосовало: {len(course_df.index)}')
     st.plotly_chart(course_figure)
 
 else:
     rating_figure = px.pie(df['lesson_rating'], names='lesson_rating')
+    rating_figure.update_traces(textposition='inside', textinfo='percent+label')
     st.plotly_chart(rating_figure)
 
 lesson_ratings = []
@@ -42,6 +44,7 @@ if rating_select1 is not None:
 st.subheader('2. Оцените отношение педагога к вам и вашему ребенку:')
 
 rating_figure = px.pie(df['teacher_rating'], names='teacher_rating')
+rating_figure.update_traces(textposition='inside', textinfo='percent+label')
 st.plotly_chart(rating_figure)
 
 teacher_ratings = []
@@ -60,6 +63,7 @@ if rating_select2 is not None:
 st.subheader('3. Оцените работу координатора:')
 
 rating_figure = px.pie(df['admin_rating'], names='admin_rating')
+rating_figure.update_traces(textposition='inside', textinfo='percent+label')
 st.plotly_chart(rating_figure)
 
 admin_ratings = []
@@ -78,6 +82,7 @@ if rating_select3 is not None:
 st.subheader('4. Оцените чистоту в центре:')
 
 rating_figure = px.pie(df['cleanliness_rating'], names='cleanliness_rating')
+rating_figure.update_traces(textposition='inside', textinfo='percent+label')
 st.plotly_chart(rating_figure)
 
 cleanliness_ratings = []
@@ -90,6 +95,25 @@ rating_select4 = st.selectbox('выберите оценку:', options=sorted(c
 
 if rating_select4 is not None:
     st.dataframe(df.loc[df['cleanliness_rating'] == rating_select4][['Name', 'referer']],
+                 width=500)
+
+
+st.subheader('5. Вы посоветуете нас друзьям? (1 - нет, 10 - обязательно посоветую):')
+
+rating_figure = px.pie(df['friend_reference'], names='friend_reference')
+rating_figure.update_traces(textposition='inside', textinfo='percent+label')
+st.plotly_chart(rating_figure)
+
+friend_ratings = []
+for index, row in df.iterrows():
+    if row['friend_reference'] not in friend_ratings and row['friend_reference'] < 10:
+        friend_ratings.append(row['friend_reference'])
+
+st.write('Посмотреть, кто поставил рейтинг меньше 10:')
+rating_select5 = st.selectbox('выберите оценку:', options=sorted(friend_ratings), index=None)
+
+if rating_select5 is not None:
+    st.dataframe(df.loc[df['friend_reference'] == rating_select5][['Name', 'referer']],
                  width=500)
 
 

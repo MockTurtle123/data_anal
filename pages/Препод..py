@@ -26,6 +26,7 @@ if teacher_select is not None:
     st.subheader('1. Оцените, насколько вашему ребенку нравятся занятия в Happy Panda:')
 
     rating_figure = px.pie(sorted_df['lesson_rating'], names='lesson_rating', )
+    rating_figure.update_traces(textposition='inside', textinfo='percent+label')
     st.plotly_chart(rating_figure)
 
     st.write('Посмотреть, кто проголосовал:')
@@ -41,6 +42,7 @@ if teacher_select is not None:
 
     st.subheader('2. Оцените отношение педагога к вам и вашему ребенку:')
     teacher_figure = px.pie(sorted_df['teacher_rating'], names='teacher_rating', )
+    teacher_figure.update_traces(textposition='inside', textinfo='percent+label')
     st.plotly_chart(teacher_figure)
 
     st.write('Посмотреть, кто проголосовал:')

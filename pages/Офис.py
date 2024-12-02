@@ -25,6 +25,7 @@ if office_select is not None:
     st.subheader('1. Оцените, насколько вашему ребенку нравятся занятия в Happy Panda:')
 
     rating_figure = px.pie(sorted_df['lesson_rating'], names='lesson_rating',)
+    rating_figure.update_traces(textposition='inside', textinfo='percent+label')
     st.plotly_chart(rating_figure)
 
     average_rating = sorted_df['lesson_rating'].mean(axis=0).squeeze()
@@ -39,12 +40,35 @@ if office_select is not None:
     st.write('Посмотреть, кто поставил рейтинг меньше 10:')
     lesson_rating_select = st.selectbox('выберите оценку:', options=sorted(lesson_ratings), index=None)
     if lesson_rating_select is not None:
-        st.dataframe(sorted_df.loc[sorted_df['lesson_rating'] == lesson_rating_select][['Name', 'referer']],
+        st.dataframe(sorted_df.loc[sorted_df['lesson_rating'] == lesson_rating_select][['Name', 'referer', 'course']],
                      width=500)
 
-    st.subheader('2. Оцените работу координатора:')
+    st.subheader('2. Оцените отношение педагога к вам и вашему ребенку:')
+
+    rating_figure = px.pie(sorted_df['teacher_rating'], names='teacher_rating', )
+    rating_figure.update_traces(textposition='inside', textinfo='percent+label')
+    st.plotly_chart(rating_figure)
+
+    average_rating = sorted_df['teacher_rating'].mean(axis=0).squeeze()
+    rating_trunc = '%.2f' % average_rating
+    st.write(f'Средний рейтинг: {rating_trunc}')
+
+    teacher_ratings = []
+    for index, row in sorted_df.iterrows():
+        if row['teacher_rating'] not in teacher_ratings and row['teacher_rating'] < 10:
+            teacher_ratings.append(row['teacher_rating'])
+
+    st.write('Посмотреть, кто поставил рейтинг меньше 10:')
+    teacher_rating_select = st.selectbox('выберите оценку:', options=sorted(teacher_ratings), index=None)
+    if teacher_rating_select is not None:
+        st.dataframe(sorted_df.loc[sorted_df['lesson_rating'] == teacher_rating_select][['Name', 'referer', 'course']],
+                     width=500)
+
+
+    st.subheader('3. Оцените работу координатора:')
 
     rating_figure = px.pie(sorted_df['admin_rating'], names='admin_rating', )
+    rating_figure.update_traces(textposition='inside', textinfo='percent+label')
     st.plotly_chart(rating_figure)
 
     average_rating = sorted_df['admin_rating'].mean(axis=0).squeeze()
@@ -62,9 +86,10 @@ if office_select is not None:
         st.dataframe(sorted_df.loc[sorted_df['admin_rating'] == admin_rating_select][['Name', 'referer']],
                      width=500)
 
-    st.subheader('3. Оцените чистоту в офисе:')
+    st.subheader('4. Оцените чистоту в офисе:')
 
     rating_figure = px.pie(sorted_df['cleanliness_rating'], names='cleanliness_rating', )
+    rating_figure.update_traces(textposition='inside', textinfo='percent+label')
     st.plotly_chart(rating_figure)
 
     average_rating = sorted_df['cleanliness_rating'].mean(axis=0).squeeze()
@@ -77,12 +102,35 @@ if office_select is not None:
             cleanliness_ratings.append(row['cleanliness_rating'])
 
     st.write('Посмотреть, кто поставил рейтинг меньше 10:')
-    cleanliness_rating_select = st.selectbox('выберите оценку:', options=sorted(cleanliness_ratings), index=None)
+    cleanliness_rating_select = st.selectbox('выберите оценку:', options=sorted(cleanliness_ratings), index=None, key='cleanliness_rating')
     if cleanliness_rating_select is not None:
         st.dataframe(sorted_df.loc[sorted_df['cleanliness_rating'] == cleanliness_rating_select][['Name', 'referer']],
                      width=500)
 
-    st.subheader('4. Что можно улучшить:')
+    st.subheader('5. Вы посоветуете нас друзьям? (1 - нет, 10 - обязательно посоветую):')
+
+    rating_figure = px.pie(sorted_df['friend_reference'], names='friend_reference', )
+    rating_figure.update_traces(textposition='inside', textinfo='percent+label')
+    st.plotly_chart(rating_figure)
+
+    average_rating = sorted_df['friend_reference'].mean(axis=0).squeeze()
+    rating_trunc = '%.2f' % average_rating
+    st.write(f'Средний рейтинг: {rating_trunc}')
+
+    friend_ratings = []
+    for index, row in sorted_df.iterrows():
+        if row['friend_reference'] not in friend_ratings and row['friend_reference'] < 10:
+            friend_ratings.append(row['friend_reference'])
+
+    st.write('Посмотреть, кто поставил рейтинг меньше 10:')
+    friend_rating_select = st.selectbox('выберите оценку:', options=sorted(friend_ratings), index=None,
+                                             key='friend_rating')
+    if friend_rating_select is not None:
+        st.dataframe(sorted_df.loc[sorted_df['friend_reference'] == friend_rating_select][['Name', 'referer']],
+                     width=500)
+
+
+    st.subheader('6. Что можно улучшить:')
     st.write('Кликните 2 раза, если комментарий не умещается, '
              'либо нажмите значок "fullscreen" в правом верхнем углу таблицы')
     filtered_df = sorted_df[sorted_df['feedback'].notnull()]
